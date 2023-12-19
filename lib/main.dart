@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:katalog_usaha_nelayan/pages/categories.dart';
 import 'pages/intro_page.dart';
 import 'pages/list.dart';
 // import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       home: IntroPage(),
       routes: {
         '/intro': (context) => const IntroPage(),
-        '/list': (context) => const ListPage()
+        '/list': (context) => const ListPage(categoryId: 2),
+        '/categories': (context) => const Categories()
       },
     );
   }
