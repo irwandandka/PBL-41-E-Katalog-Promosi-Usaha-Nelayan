@@ -3,9 +3,10 @@ class Product {
   String name;
   int price;
   String imagePath;
-  String rating;
+  int rating;
   String description;
-  bool isBestSeller;
+  String seller;
+  int isBestSeller;
 
   Product({
     required this.name, 
@@ -13,13 +14,15 @@ class Product {
     required this.imagePath, 
     required this.rating,
     required this.description,
+    required this.seller,
     required this.isBestSeller,
   });
 
   String get _name => name;
   int get _price => price;
   String get _imagePath => imagePath;
-  String get _rating => rating;
+  int get _rating => rating;
   String get _description => description;
-  bool get _isBestSeller => isBestSeller;
+  String get _seller => seller;
+  int get _isBestSeller => isBestSeller;
 }
