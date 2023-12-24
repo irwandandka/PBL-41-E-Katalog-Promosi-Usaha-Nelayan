@@ -10,7 +10,7 @@ class IntroPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blue[900],
       body: Padding(
-        padding: EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(25.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

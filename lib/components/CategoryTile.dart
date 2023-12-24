@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:katalog_usaha_nelayan/models/Category.dart';
 
 class CategoryTile extends StatelessWidget {
   final dynamic category;
