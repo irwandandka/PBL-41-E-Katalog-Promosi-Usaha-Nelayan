@@ -20,7 +20,7 @@ class ProductTile extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
-              child: Image.asset(
+              child: Image.network(
                 product.imagePath,
                 height: 250.0,
                 width: double.infinity,
@@ -48,7 +48,7 @@ class ProductTile extends StatelessWidget {
                         Text(
                           NumberFormat.currency(
                             locale: 'id',
-                            symbol: 'Rp ',
+                            symbol: 'IDR ',
                             decimalDigits: 2,
                           ).format(product.price).toString(),
                             style: const TextStyle(
