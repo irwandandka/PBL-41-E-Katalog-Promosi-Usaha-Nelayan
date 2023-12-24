@@ -4,8 +4,8 @@ import '../models/Product.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailPage extends StatefulWidget {
   // final Product product;
@@ -22,7 +22,7 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   int get productId => widget.productId;
   late int price;
-
+  late String phoneNumber;
   Future<Map<String, dynamic>> fetctProduct(idProduct) async {
     String id = idProduct.toString();
     final response = await http
@@ -39,10 +39,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   late Future<Map> futureProduct;
 
+  void launchWhatsApp(phoneNumber) async {
+  // String phoneNumber = '+6281261564458'; // Replace with the desired phone number
+  // final Uri url = Uri.parse("https://wa.me/6282169784156");
+  String message = Uri.encodeFull('Halo, Saya ingin memesan barang');
+  final Uri url = Uri.parse("whatsapp://send?phone=$phoneNumber&text=$message");
+  launchUrl(url);
+}
+
   void initState() {
     price = 80000;
     super.initState();
-    // futureProduct = fetctProduct(productId);
   }
   
 
@@ -62,19 +69,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               future: fetctProduct(productId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 } else {
                   var product = snapshot.data;
-                  // var productModel = Product(
-                  //   name: product?['Name'] ?? '', 
-                  //   price: product?['Price'] ?? 0, 
-                  //   imagePath: product?['Image'] ?? '', 
-                  //   rating: product?['Rating'] ?? 12, 
-                  //   description: product?['Description'] ?? '', 
-                  //   seller: product?['Seller'] ?? '', 
-                  //   isBestSeller: 123,
-                  // );
-                  // return Text(product?['Name']);
                   if(product?['isBestSeller'] == true) {
                     widget.bestSeller = true;
                   } else {
@@ -82,14 +81,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   }
                   price = product?['Price'];
                   widget.rating = product?['Rating'];
+                  phoneNumber = product?['SellerContact'];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: ListView(
                       children: [
                         // Image
-                        Image.asset(
+                        // Image.asset(
+                        //   product?['Image'],
+                        //   height: 200,
+                        // ),
+
+                        Image.network(
                           product?['Image'],
-                          height: 200,
+                          width: MediaQuery.of(context).size.width,
                         ),
                         
                         const SizedBox(height: 25),
@@ -144,6 +149,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ),
                             Row(
                               children: [
+                                Icon(
+                                  Icons.star, 
+                                  size: 25, 
+                                  color: Colors.amber[300],
+                                ),
                                 Text(
                                   widget.rating.toString(),
                                   style: TextStyle(
@@ -152,28 +162,59 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                     fontWeight: FontWeight.bold 
                                   ),
                                 ),
-                                Icon(Icons.star, size: 25, color: Colors.amber[300],)
                               ],
                             )
                           ]
                         ),
                         
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 15),
 
-                        Text(
-                          NumberFormat.currency(
-                            locale: 'id',
-                            symbol: 'Rp ',
-                            decimalDigits: 2,
-                          ).format(product?['Price']),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green[400]
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              NumberFormat.currency(
+                                locale: 'id',
+                                symbol: 'IDR ',
+                                decimalDigits: 2,
+                              ).format(product?['Price']),
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green[400]
+                              ),
+                            ),
+
+                            Text(
+                              product?['Code'],
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ],
                         ),
 
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 15),
+
+                        Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Icon(
+                              Icons.person
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              product?['Seller'],
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 20),
                 
                         // Description
                         Text(
@@ -195,7 +236,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             fontSize: 15,
                             height: 2,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   );
@@ -203,31 +244,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               },
             ),
           ),
-
-          // Container(
-          //   color: primaryColor,
-          //   padding: const EdgeInsets.all(25),
-          //   child: Column(
-          //     children: [
-          //       Row(
-          //         children: [
-          //             Text(
-          //             NumberFormat.currency(
-          //               locale: 'id',
-          //               symbol: 'Rp ',
-          //               decimalDigits: 2,
-          //             ).format(price),
-          //             style: const TextStyle(
-          //               color: Colors.white,
-          //               fontWeight: FontWeight.bold,
-          //               fontSize: 16
-          //             ),)
-          //         ],
-          //       )
-          //     ],
-          //   ),
-          // ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Call the function to launch WhatsApp
+          launchWhatsApp(phoneNumber);
+        },
+        child: const Icon(
+          Icons.message,
+        ),
       ),
     );
   }
