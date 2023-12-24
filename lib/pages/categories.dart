@@ -37,7 +37,6 @@ class _CategoriesState extends State<Categories> {
 
   void initState(){
     super.initState();
-    // futureCategory = fetchCategory();
   }
 
   void navigateToProductList(categoryId) {
@@ -70,7 +69,9 @@ class _CategoriesState extends State<Categories> {
               future: fetchCategory(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(); // Menampilkan indikator loading selama pengambilan data.
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  ); // Menampilkan indikator loading selama pengambilan data.
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
