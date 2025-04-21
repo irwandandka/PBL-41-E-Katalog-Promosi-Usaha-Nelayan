@@ -42,13 +42,8 @@ The project is currently complete for its initial purpose, but I have plans to c
 
 This project is more than just a college assignment. It's a real example of how technology can empower local communities — like fishermen — to adapt and grow in the digital era. I hope to continue developing solutions like this that combine learning with real-world impact.
 
-## 🚀 Try the App
-
-📥 [Download APK](#) *(coming soon)*  
-🔗 Live demo (if any): [link](#)
-
 ## 📦 Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
+   git clone https://github.com/irwandandka/PBL-41-E-Katalog-Promosi-Usaha-Nelayan.git
